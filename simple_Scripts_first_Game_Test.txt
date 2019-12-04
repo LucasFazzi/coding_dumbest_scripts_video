@@ -1,0 +1,99 @@
+extends KinematicBody2D
+
+var move_speed_right_max = 100
+var move_speed_left_max = -100
+
+var left = false
+var right = true
+
+var velocity = Vector2()
+
+func _ready():
+	$".".add_to_group("enemies")
+
+func _physics_process(delta):
+	
+	if $Raycast_right.is_colliding():
+	left = true
+	right = false
+
+	if $Raycast_left.is_colliding():
+	left = false
+	right = true
+
+	if left == true:
+	velocity.x = move_speed_left_max
+	velocity = move_and_slide(velocity).normalized()
+
+	if right == true:
+	velocity.x = move_speed_right_max
+	velocity = move_and_slide(velocity).normalized()
+
+
+------
+
+
+extends Area 2D
+
+func _ready():
+	pass
+
+func _on_exit_lvl1_body_entered(body):
+	if body.is_in_group("player"):
+		get_tree().call_deferred("change_scene","res:// #put here your Scene Path#)
+		call_deferred("queue_free")
+	else:
+		pass
+
+
+-------
+
+extends KinematicBody2D
+ 
+const MOVE_SPEED = 500
+const JUMP_FORCE = 1000
+const GRAVITY = 50
+const MAX_FALL_SPEED = 1000
+ 
+onready var anim_player = $AnimationPlayer
+onready var sprite = $Sprite
+ 
+var y_velo = 0
+var facing_right = false
+
+func _ready():
+	add_to_group("player")
+ 
+func _physics_process(delta):
+    var move_dir = 0
+    if Input.is_action_pressed("move_right"):
+        move_dir += 1
+    if Input.is_action_pressed("move_left"):
+        move_dir -= 1
+    move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1))
+   
+    var grounded = is_on_floor()
+    y_velo += GRAVITY
+    if grounded and Input.is_action_just_pressed("jump"):
+        y_velo = -JUMP_FORCE
+    if grounded and y_velo >= 5:
+        y_velo = 5
+    if y_velo > MAX_FALL_SPEED:
+        y_velo = MAX_FALL_SPEED
+
+func _on_player_hit_hit():
+	get_parent().get_tree().call_deferred("reload_current_scene")
+
+------
+
+
+extends Area 2D
+
+signal hit
+
+func _ready():
+	pass
+
+func _on_player_hit_body_entered(body):
+	emit_signal("hit")
+	
