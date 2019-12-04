@@ -1,5 +1,5 @@
 extends Node2D
-
+#star game script#
 func _ready():
 	pass
 
@@ -14,7 +14,7 @@ func _process(delta):
 
 
 extends Area 2D
-
+#change level script#
 func _ready():
 	pass
 
