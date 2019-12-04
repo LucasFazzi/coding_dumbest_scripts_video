@@ -1,0 +1,25 @@
+extends Node2D
+
+func _ready():
+	pass
+
+func _process(delta):
+	if Input.is_action_just_pressed("jump"):
+	get_tree().call_deferred("change_scene","res:// #put here your Scene path#)
+	call_deferred("queue_free")
+
+
+
+-------   
+
+
+extends Area 2D
+
+func _ready():
+	pass
+
+func _on_exit_lvl1_body_entered(body):
+	get_tree().call_deferred("change_scene","res:// #put here your Scene Path#)
+	call_deferred("queue_free")
+
+
