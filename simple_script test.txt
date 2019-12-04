@@ -1,0 +1,11 @@
+extends Node2D
+
+var a = 1
+var b = 2
+var c
+
+func _ready():
+	
+	print ("ola")
+	c = a+b
+	print (c)
