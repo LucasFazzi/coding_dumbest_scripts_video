@@ -6,9 +6,6 @@ const JUMP_FORCE = 1000
 const GRAVITY = 50
 const MAX_FALL_SPEED = 1000
  
-onready var anim_player = $AnimationPlayer
-onready var sprite = $Sprite
- 
 var y_velo = 0
 var facing_right = false
  
