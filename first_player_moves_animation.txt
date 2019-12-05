@@ -1,0 +1,57 @@
+extends KinematicBody2D
+
+
+var gravity = 5
+var move = Vector2()
+var speed = 7
+var lunar_jump = 10
+var pxygen = 100
+
+func _process(delta):
+update_animation()
+
+func _physics_process(delta):
+update_moves()
+
+func update_moves():
+#moves
+move.y += gravity
+
+if Input.is_action_pressed("move_right"):
+	move.x += speed
+	
+if Input.is_action_pressed("move_left"):
+	move.x -= speed
+
+if not Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
+	move.x = 0
+
+if Input.is_action_pressed("move_jump"):
+	move.y -= lunar_jump
+
+	move = move_and_slide(move * speed, Vector2(0,-1)).normalized()
+
+
+func update_animation():
+#animation
+
+if move.x < 0 and is_on_floor():
+	$Player_AnimationSprite.play("left")
+
+if move.x > 0 and is_on_floor():
+	$Player_AnimatedSprite.play("right")
+
+if move == 0 and is_on_floor():
+	$Player_AnimatedSprite.play("idle")
+
+if not is_on_floor() and move.x > 0:
+	$Player_AnimatedSprite.play("jump_right")
+
+if not is_on_floor() and move.x < 0:
+	$Player.AnimatedSprite.play("jump_left")
+
+if not is_on_floor() and move.x == 0:
+	$Player.AnimatedSprite.play("jump_front")
+	
+
+	
