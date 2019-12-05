@@ -1,0 +1,30 @@
+extends Node
+#global#
+var oxygen = 30
+var crystal_portal = 0
+var timer_oxygen
+
+func _ready():
+ check_oxygen()
+
+func check_oxygen():
+	timer_oxygen = Timer.new()
+	timer_oxygen.connect("timeout",self,"_on_timer_oxygen_timeout")
+	add_child(timer_oxygen)
+	timer_oxygen.set_wait_time(3)
+	timer_oxygen.set_one_shot(false)
+	timer_oxygen.start()
+
+func _on_timer_oxygen_timeout():
+	oxygen -= 1
+
+
+-----
+extends TextureProgress
+#GUI#
+
+func _process(delta):
+	update_oxygen()
+
+func update_oxygen():
+	$".".value = get_node("/root/Global").oxygen
